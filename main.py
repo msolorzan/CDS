@@ -8,6 +8,7 @@ class Platillo(ft.TextField):
         self.width = 200
         self.hint_text = 0
         self.filled = True
+        self.value = None
 
 class DatosCliente(ft.TextField):
     def __init__(self, texto_mostrado, autofocus = False):
@@ -17,6 +18,50 @@ class DatosCliente(ft.TextField):
 
 def main(page):
     page.title = 'CDS Control de pedidos'    
+
+    def borrar_campos(e):
+        texto_nombre.value = ''
+        texto_direccion.value = ''
+        texto_telefono.value = ''
+        platillo_1.value = ''
+        platillo_2.value = ''
+        platillo_3.value = ''
+        platillo_4.value = ''
+        platillo_5.value = ''
+        platillo_6.value = ''
+        platillo_7.value = ''
+        platillo_8.value = ''
+        platillo_9.value = ''
+
+        texto_nombre.autofocus = True
+        page.update()
+
+    def agregar_informacion(e):
+        if texto_nombre.value != '':        
+            b=ft.DataRow(
+                    cells=[
+                        ft.DataCell(ft.Text(texto_nombre.value)),
+                        ft.DataCell(ft.Text(texto_direccion.value)),
+                        ft.DataCell(ft.Text(texto_telefono.value)),
+                        # ft.DataCell(ft.Text(platillo_1.value)),
+                        # ft.DataCell(ft.Text(platillo_2.value)),
+                        # ft.DataCell(ft.Text(platillo_3.value)),
+                        # ft.DataCell(ft.Text(platillo_4.value)),
+                        # ft.DataCell(ft.Text(platillo_5.value)),
+                        # ft.DataCell(ft.Text(platillo_6.value)),
+                        # ft.DataCell(ft.Text(platillo_7.value)),
+                        # ft.DataCell(ft.Text(platillo_8.value)),
+                        # ft.DataCell(ft.Text(platillo_9.value)),
+                        # ft.DataCell(ft.Text(texto_estado.value)),
+                        # ft.DataCell(ft.Text(texto_estado)),
+                        # ft.DataCell(ft.Text(texto_pedido))
+                        ])
+
+            tabla_pedido.rows.append(b)
+        texto_nombre.value = ''
+        
+        page.update()
+        
 
     texto_nombre = DatosCliente(
         'Ingresa nombre del cliente',
@@ -51,12 +96,15 @@ def main(page):
     
     boton_agregar_pedido = ft.ElevatedButton(
         text="Agregar pedido", 
-        icon = ft.icons.ADD
+        icon = ft.icons.ADD,
+        on_click = agregar_informacion
         )
     boton_borrar_pedido = ft.ElevatedButton(
         text="Borrar campos rellenos", 
         icon = ft.icons.DELETE, 
-        bgcolor = '#B4583D'
+        bgcolor = '#B4583D',
+        on_click = borrar_campos,
+        color = '#FFFFFF'
         )
     
     tabla_pedido = ft.DataTable(
@@ -76,9 +124,14 @@ def main(page):
                 ft.DataColumn(ft.Text(f"Estado")),
                 ft.DataColumn(ft.Text(f"Total")),
                 ft.DataColumn(ft.Text(f"Hora Entrega")),
-            ]
+            ],
     )
+
+    lista_vista = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
+    lista_vista.controls.append(tabla_pedido)
+
     
+
     value = 350.00 # BORRAR EN MODIFICACIONES
     subtotal = ft.Container(
                     content=
@@ -116,6 +169,16 @@ def main(page):
             ),
         ],
     )
+
+    texto_estado = ft.TextField(
+        disabled = True, 
+        width = 50, 
+        value = 'NE',
+        tooltip = 'NE = No entregado\n E   = Entregado',
+        text_align = ft.TextAlign.CENTER
+    )
+
+    texto_pedido = '12:00'
     
     page.add(
         ft.Column(
@@ -127,8 +190,9 @@ def main(page):
                     ),
             ft.Row(
                 [
-                    boton_agregar_pedido, boton_borrar_pedido
-                ]
+                    texto_estado
+                ],
+                height = 25
                 ),
             ft.Row(
                 [
@@ -140,6 +204,11 @@ def main(page):
                     platillo_1, platillo_2, platillo_3, platillo_4, platillo_5, platillo_6, platillo_7, platillo_8, platillo_9
                 ]
                     ),
+            ft.Row(
+                [
+                    boton_agregar_pedido, boton_borrar_pedido
+                ]
+                ),
             ft.Row(
                 [
                     tabla_pedido
