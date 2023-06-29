@@ -43,18 +43,18 @@ def main(page):
                         ft.DataCell(ft.Text(texto_nombre.value)),
                         ft.DataCell(ft.Text(texto_direccion.value)),
                         ft.DataCell(ft.Text(texto_telefono.value)),
-                        # ft.DataCell(ft.Text(platillo_1.value)),
-                        # ft.DataCell(ft.Text(platillo_2.value)),
-                        # ft.DataCell(ft.Text(platillo_3.value)),
-                        # ft.DataCell(ft.Text(platillo_4.value)),
-                        # ft.DataCell(ft.Text(platillo_5.value)),
-                        # ft.DataCell(ft.Text(platillo_6.value)),
-                        # ft.DataCell(ft.Text(platillo_7.value)),
-                        # ft.DataCell(ft.Text(platillo_8.value)),
-                        # ft.DataCell(ft.Text(platillo_9.value)),
-                        # ft.DataCell(ft.Text(texto_estado.value)),
-                        # ft.DataCell(ft.Text(texto_estado)),
-                        # ft.DataCell(ft.Text(texto_pedido))
+                         ft.DataCell(ft.Text(platillo_1.value)),
+                         ft.DataCell(ft.Text(platillo_2.value)),
+                         ft.DataCell(ft.Text(platillo_3.value)),
+                         ft.DataCell(ft.Text(platillo_4.value)),
+                         ft.DataCell(ft.Text(platillo_5.value)),
+                         ft.DataCell(ft.Text(platillo_6.value)),
+                         ft.DataCell(ft.Text(platillo_7.value)),
+                         ft.DataCell(ft.Text(platillo_8.value)),
+                         ft.DataCell(ft.Text(platillo_9.value)),
+                         ft.DataCell(ft.Text(texto_estado.value)),
+                         ft.DataCell(ft.Text(texto_estado)),
+                         ft.DataCell(ft.Text(texto_pedido))
                         ])
 
             tabla_pedido.rows.append(b)
