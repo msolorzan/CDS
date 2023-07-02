@@ -20,6 +20,7 @@ def main(page):
     page.title = 'CDS Control de pedidos'    
 
     def borrar_campos(e):
+        texto_nombre.autofocus = True
         texto_nombre.value = ''
         texto_direccion.value = ''
         texto_telefono.value = ''
@@ -33,11 +34,13 @@ def main(page):
         platillo_8.value = ''
         platillo_9.value = ''
 
-        texto_nombre.autofocus = True
         page.update()
 
     def agregar_informacion(e):
-        if texto_nombre.value != '':        
+        if texto_nombre.value != '':    
+            estado = '#7FE13B'
+            if texto_estado.value == 'NE':
+                estado = '#E1613B'
             b=ft.DataRow(
                     cells=[
                         ft.DataCell(ft.Text(texto_nombre.value)),
@@ -52,13 +55,15 @@ def main(page):
                          ft.DataCell(ft.Text(platillo_7.value)),
                          ft.DataCell(ft.Text(platillo_8.value)),
                          ft.DataCell(ft.Text(platillo_9.value)),
-                         ft.DataCell(ft.Text(texto_estado.value)),
-                         ft.DataCell(ft.Text(texto_estado)),
-                         ft.DataCell(ft.Text(texto_pedido))
+                         ft.DataCell(ft.Text(texto_estado.value, color = estado)),
+                         ft.DataCell(ft.Text(F'${round(value, 2)}')),
+                         ft.DataCell(ft.Text(texto_pedido)),
+                         ft.DataCell(boton_editar_registro),
+                         ft.DataCell(boton_borrar_registro),
                         ])
 
-            tabla_pedido.rows.append(b)
-        texto_nombre.value = ''
+            tabla_pedido.rows.insert(0, b)
+        borrar_campos(e)
         
         page.update()
         
@@ -106,33 +111,45 @@ def main(page):
         on_click = borrar_campos,
         color = '#FFFFFF'
         )
+    boton_borrar_registro = ft.IconButton(
+        icon = ft.icons.DELETE,
+        icon_size = 20,
+        tooltip = 'Eliminar registro'
+    )
+    boton_editar_registro = ft.IconButton(
+        icon = ft.icons.EDIT,
+        icon_size = 20,
+        tooltip = 'Editar registro'
+    )
     
     tabla_pedido = ft.DataTable(
             columns=[
-                ft.DataColumn(ft.Text("Cliente")),
-                ft.DataColumn(ft.Text("Dir.")),
-                ft.DataColumn(ft.Text("Tel."), numeric=True),
-                ft.DataColumn(ft.Text(f"{platillo_1.label}")),
-                ft.DataColumn(ft.Text(f"{platillo_2.label}")),
-                ft.DataColumn(ft.Text(f"{platillo_3.label}")),
-                ft.DataColumn(ft.Text(f"{platillo_4.label}")),
-                ft.DataColumn(ft.Text(f"{platillo_5.label}")),
-                ft.DataColumn(ft.Text(f"{platillo_6.label}")),
-                ft.DataColumn(ft.Text(f"{platillo_7.label}")),
-                ft.DataColumn(ft.Text(f"{platillo_8.label}")),
-                ft.DataColumn(ft.Text(f"{platillo_9.label}")),
-                ft.DataColumn(ft.Text(f"Estado")),
-                ft.DataColumn(ft.Text(f"Total")),
-                ft.DataColumn(ft.Text(f"Hora Entrega")),
-            ],
+                ft.DataColumn(ft.Text("Cliente", size=15)),
+                ft.DataColumn(ft.Text("Dir.", size=15)),
+                ft.DataColumn(ft.Text("Tel.", size=15), numeric=True),
+                ft.DataColumn(ft.Text(f"{platillo_1.label}", size=15)),
+                ft.DataColumn(ft.Text(f"{platillo_2.label}", size=15)),
+                ft.DataColumn(ft.Text(f"{platillo_3.label}", size=15)),
+                ft.DataColumn(ft.Text(f"{platillo_4.label}", size=15)),
+                ft.DataColumn(ft.Text(f"{platillo_5.label}", size=15)),
+                ft.DataColumn(ft.Text(f"{platillo_6.label}", size=15)),
+                ft.DataColumn(ft.Text(f"{platillo_7.label}", size=15)),
+                ft.DataColumn(ft.Text(f"{platillo_8.label}", size=15)),
+                ft.DataColumn(ft.Text(f"{platillo_9.label}", size=15)),
+                ft.DataColumn(ft.Text(f"Estado", size=15)),
+                ft.DataColumn(ft.Text(f"Total", size=15)),
+                ft.DataColumn(ft.Text(f"Hora Entrega", size=15)),
+                ft.DataColumn(ft.Text()),
+                ft.DataColumn(ft.Text()),
+            ], 
     )
 
-    lista_vista = ft.ListView(expand=1, spacing=10, padding=20, auto_scroll=True)
-    lista_vista.controls.append(tabla_pedido)
+    columna_vista = ft.Column([tabla_pedido],scroll=True)
+    fila_vista = ft.Row([columna_vista],expand=1,vertical_alignment=ft.CrossAxisAlignment.START, scroll=True)
 
     
 
-    value = 350.00 # BORRAR EN MODIFICACIONES
+    value = (platillo_1.value + platillo_2.value) * 60 # BORRAR EN MODIFICACIONES
     subtotal = ft.Container(
                     content=
                         ft.Column(
@@ -209,13 +226,10 @@ def main(page):
                     boton_agregar_pedido, boton_borrar_pedido
                 ]
                 ),
-            ft.Row(
-                [
-                    tabla_pedido
-                ])
                 ]
             )
         )
+    page.add(fila_vista)
         
     
     
